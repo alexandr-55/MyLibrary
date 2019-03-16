@@ -18,14 +18,14 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
-db = DB("Library3.db")
+db = DB("Library1.db")
 
 class avtForm(FlaskForm):
     avtorf = StringField('avtor', validators=[DataRequired()])
     submit = SubmitField('vvvvvvv') 
     
 
-@app.route('/login1', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     login_error = ''
@@ -48,7 +48,7 @@ def login():
 @app.route('/spisok_book')
 def spisok_book():
     if "username" not in session:
-        return redirect('/login1')
+        return redirect('/login')
     if session['admin'] == 1:      
         print('!!!!!!!!!!!!!!!!!!!')
         books = BooksModel(db.get_connection()).get_all()
@@ -57,7 +57,7 @@ def spisok_book():
 @app.route('/spisok_zakaz')
 def spisok_zakaz():
     if "username" not in session:
-        return redirect('/login1')
+        return redirect('/login')
     if session['admin'] == 1:      
         print('!!!!!!!!!!!!!!!!!!!')
         zakaz = ZakazModel(db.get_connection()).get_all()
@@ -66,13 +66,14 @@ def spisok_zakaz():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if "username" not in session:
-        return redirect('/login1')
+        return redirect('/login')
     if session['admin'] == 1:      
-        print('!!!!!!!!!!!!!!!!!!!')
+        #print('!!!!!!!!!!!!!!!!!!!')
         #books = BooksModel(db.get_connection()).get_all()
         #return render_template('myLibr_book.html', title='Библиотека', books=books)
-        zakaz = ZakazModel(db.get_connection()).get_all()
-        return render_template('myLibr_zakaz.html', title='Библиотека', zakaz=zakaz)
+        #zakaz = ZakazModel(db.get_connection()).get_all()
+        #return render_template('myLibr_zakaz.html', title='Библиотека', zakaz=zakaz)
+        return render_template('myLibr_zakaz.html', title='Библиотека')    
     
     else:  
         form = avtForm()
@@ -94,14 +95,14 @@ def registration():
         users = UsersModel(db.get_connection())
         users.insert(form.username.data, form.password.data)
         flash('Спасибо за регистрацию', 'success')
-        return redirect('/login1')
+        return redirect('/login')
     return render_template('myLibr_reg.html', title='Библиотека', form=form)
 
 
 @app.route('/sort/<sort>')
 def change_sort(sort):
     if "username" not in session:
-        return redirect('/login1')
+        return redirect('/login')
     session['sort'] = sort
     return redirect('/')
 
@@ -117,14 +118,16 @@ def diaries_logout():
 @app.route('/add_book', methods=['GET', 'POST'])
 def add_book():
     if 'username' not in session:
-        return redirect('/login1')
+        return redirect('/login')
     form = AddBookForm()
     if form.validate_on_submit():
         avtor = form.avtor.data
         name_book = form.name_book.data
         kol = form.kol.data
+        stellag = form.stellag.data
+        polka = form.polka.data
         bm = BooksModel(db.get_connection())
-        bm.insert(avtor,name_book,kol)
+        bm.insert(avtor, name_book, kol, stellag, polka)
         return redirect("/spisok_book")
     return render_template('myLibr_add_book.html', title='Добавление книги', form=form, username=session['username'])
 
@@ -132,7 +135,7 @@ def add_book():
 def delete_book(book_id):
     #print(book_id)
     if 'username' not in session:
-        return redirect('/login1')
+        return redirect('/login')
     bm = BooksModel(db.get_connection())
     bm.delete(book_id)
     return redirect("/spisok_book")
@@ -142,7 +145,7 @@ def edit_book(book_id):
     print(book_id)
     print('22')
     if 'username' not in session:
-        return redirect('/login1')
+        return redirect('/login')
     bm = BooksModel(db.get_connection())
     #bm.delete(book_id)
     return redirect("/")
@@ -156,7 +159,7 @@ def add_zakaz(book_id):
         print(000)   
     
     if 'username' not in session:
-        return redirect('/login1')
+        return redirect('/login')
     bm = BooksModel(db.get_connection())
     zm = ZakazModel(db.get_connection())
     userid =  session['userid']
@@ -168,7 +171,7 @@ def add_zakaz(book_id):
 def delete_zakaz(zakaz_id):
     #print(book_id)
     if 'username' not in session:
-        return redirect('/login1')
+        return redirect('/login')
     zm = ZakazModel(db.get_connection())
     zm.delete(zakaz_id)
     return redirect("/")

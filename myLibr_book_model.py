@@ -13,16 +13,18 @@
                             (id INTEGER PRIMARY KEY AUTOINCREMENT,
                              avtor VARCHAR(100),
                              name_book TEXT,
-                             kol INTEGER
+                             kol INTEGER,
+			     stellag INTEGER,
+			     polka INTEGER
                              )''')
         cursor.close()
         self.connection.commit()
 
-    def insert(self, avtor, name_book, kol):
+    def insert(self, avtor, name_book, kol, stellag, polka):
         cursor = self.connection.cursor()
         cursor.execute('''INSERT INTO books
-                          (avtor, name_book, kol)
-                          VALUES (?,?,?)''', (avtor, name_book, str(kol) ))
+                          (avtor, name_book, kol, stellag, polka)
+                          VALUES (?,?,?,?,?)''', (avtor, name_book, str(kol), str(stellag), str(polka) ))
         cursor.close()
         self.connection.commit()
 

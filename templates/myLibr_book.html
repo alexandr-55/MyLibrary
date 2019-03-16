@@ -1,14 +1,16 @@
 ﻿{% extends "myLibr_base_adm.html" %}
 
 {% block content %}
-    <a href="/add_book">Добавить книгу1</a>
+    <a href="/add_book">Добавить книгу</a>
     {% for item in books %}
         <div class="alert alert-dark" role="alert">	    
             <h2>{{item[1]}}</h2>
             Название   : {{item[2]}}
 	    <div></div>
 
-            Экземпляров:  {{item[3]}}  
+            Экземпляров:  {{item[3]}}
+            Стеллаж:  {{item[4]}}
+            Полка:  {{item[5]}} 
 	    <div></div>
             {% if session['admin'] == 1 %}
                 <div class="btn-group">
