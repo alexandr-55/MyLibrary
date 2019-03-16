@@ -1,0 +1,21 @@
+﻿{% extends "myLibr_base_adm.html" %}
+
+{% block content %}
+    <h2>{{title}}</h2>
+    {% for item in zakaz %}
+        <div class="alert alert-dark" role="alert">	    
+            <h2>{{item[1]}}</h2>
+            Название   : {{item[2]}}
+	    <div></div>
+
+            Экземпляров:  {{item[3]}}  
+	    <div></div>
+            {% if session['admin'] == 1 %}
+                <div class="btn-group">
+                    <a href="/delete_zakaz/{{item[0]}}">Выполнить заказ</a>
+		</div>
+            {% endif %}
+
+        </div>
+    {% endfor %}
+{% endblock %}

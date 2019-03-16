@@ -1,0 +1,36 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<title>{{title}}</title>
+</head>
+  <body>
+    <header>
+      <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="/">Библиотека</a>
+{% if "username" in session %}
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex"></ul>
+        <a class="navbar-brand" href="/">{{session['username']}}
+            {% if session['admin'] == 1 %}(администратор){% endif %}
+            {% if session['admin'] != 1 %}(читатель){% endif %}
+        </a>
+        <a class="btn btn-outline-primary my-2 my-sm-0" type="submit" href="/logout">Выйти</a>
+ 
+       <div class="btn-group">
+            <a href="/spisok_book" class="btn btn-outline-primary btn-lg mb-4 rounded" role="button">Список книг</a>
+            <a href="/spisok_zakaz" class="btn btn-outline-primary btn-lg mb-4 ml-5 rounded" role="button">Обработать заказы</a>
+            <a href="/admin" class="btn btn-outline-primary btn-lg mb-4 ml-4 rounded" role="button">Статистика</a>
+        </div>
+
+{% endif %}
+      </nav>
+    </header>
+    <!-- Begin page content -->
+    <main role="main" class="container">
+        {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>
+

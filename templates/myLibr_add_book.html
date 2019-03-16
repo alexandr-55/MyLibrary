@@ -1,0 +1,36 @@
+{% extends "myLibr_base_adm.html" %}
+ 
+{% block content %}
+    <h1>Добавление книги</h1>
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.avtor.label }}<br>
+            {{ form.avtor}}<br>
+            {% for error in form.avtor.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.name_book.label }}<br>
+            {{ form.name_book}}<br>
+            {% for error in form.name_book.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>
+            {{ form.kol.label }}<br>
+            {{ form.kol}}<br>
+            {% for error in form.kol.errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ error }}
+                </div>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+{% endblock %}

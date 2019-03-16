@@ -1,0 +1,11 @@
+﻿{% extends "myLibr_base_adm.html" %}
+
+{% block content %}
+    <form action="" method="post" novalidate>
+        <p>
+            {{ form.avtorf.label }}<br>
+            {{ form.username }}<br>
+        </p>
+        <p>{{ form.submit(class_="btn btn-outline-primary btn-lg") }}</p>
+    </form>
+{% endblock %}
