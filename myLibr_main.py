@@ -18,7 +18,7 @@ from datetime import datetime
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
-db = DB("Library1.db")
+db = DB("Library.db")
 
 class avtForm(FlaskForm):
     avtorf = StringField('avtor', validators=[DataRequired()])
@@ -50,7 +50,6 @@ def spisok_book():
     if "username" not in session:
         return redirect('/login')
     if session['admin'] == 1:      
-        print('!!!!!!!!!!!!!!!!!!!')
         books = BooksModel(db.get_connection()).get_all()
         return render_template('myLibr_book.html', title='Библиотека', books=books)
 
@@ -59,9 +58,13 @@ def spisok_zakaz():
     if "username" not in session:
         return redirect('/login')
     if session['admin'] == 1:      
-        print('!!!!!!!!!!!!!!!!!!!')
         zakaz = ZakazModel(db.get_connection()).get_all()
-        return render_template('myLibr_zakaz.html', title='Заказы', zakaz=zakaz)
+        new_zakaz = []
+        for i in zakaz:
+            bm = BooksModel(db.get_connection()).get(i[2])
+            um = UsersModel(db.get_connection()).get(i[1])
+            new_zakaz.append((i[0], bm[1], bm[2], bm[3], bm[4], bm[5], um[1]))
+        return render_template('myLibr_zakaz.html', title='Заказы', zakaz=new_zakaz)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -174,7 +177,18 @@ def delete_zakaz(zakaz_id):
         return redirect('/login')
     zm = ZakazModel(db.get_connection())
     zm.delete(zakaz_id)
-    return redirect("/")
+    return redirect("/spisok_zakaz")
+
+@app.route('/del_all_zakaz', methods=['GET'])
+def del_all_zakaz():
+    #print(book_id)
+    if 'username' not in session:
+        return redirect('/login')
+    zm = ZakazModel(db.get_connection()).del_all()
+    #for i in zm:
+        #zm.delete(i[0]) 
+    return redirect("/spisok_zakaz")
+
 
 @app.route('/my_find/<string:avtorf>')
 def my_find(avtorf):

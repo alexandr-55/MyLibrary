@@ -4,11 +4,13 @@
     <h2>{{title}}</h2>
     {% for item in zakaz %}
         <div class="alert alert-dark" role="alert">	    
-            <h2>{{item[1]}}</h2>
+            <h2>Читатель:   {{item[6]}}</h2>
+	    Автор      : {{item[1]}}
+	    <div></div>
             Название   : {{item[2]}}
 	    <div></div>
 
-            Экземпляров:  {{item[3]}}  
+            Экземпляров:  {{item[3]}}   Стеллаж: {{item[4]}}    Полка: {{item[5]}} 
 	    <div></div>
             {% if session['admin'] == 1 %}
                 <div class="btn-group">

@@ -53,3 +53,9 @@ class ZakazModel:
         cursor.execute('''DELETE FROM zakaz WHERE id = ?''', (str(zakaz_id),))
         cursor.close()
         self.connection.commit()
+
+    def del_all(self):
+        cursor = self.connection.cursor()
+        cursor.execute("DELETE FROM zakaz")
+        cursor.close()
+        self.connection.commit()
